@@ -24,7 +24,7 @@ const Nav = () => {
           </li>
         </ul>
       </div>
-      <div className="top-bar-rigt">
+      <div className="top-bar-right">
         <form onSubmit={onSearch}>
           <ul className="menu">
             <li>
