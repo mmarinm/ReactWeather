@@ -6,4 +6,4 @@ const WeatherResult = ({data}) => {
   );
 }
 
-expot {WeatherResult}
+export {WeatherResult}
