@@ -3,7 +3,7 @@ import React from "react";
 import { WeatherForm } from "WeatherForm";
 import { WeatherResult } from "WeatherResult";
 import { getTemp } from 'app/api/openWeatherMap.jsx';
-// const openWeatherMap = require('openWeatherMap');
+import { ErrorModal } from 'ErrorModal';
 
 export class Weather extends React.Component {
 
@@ -15,7 +15,10 @@ export class Weather extends React.Component {
   }
 
   handleSearch(location) {
-    this.setState({isLoading:true});
+    this.setState({
+      isLoading:true,
+      errorMessage: undefined
+    });
     const that = this;
     getTemp(location).request.then(function(data){
       that.setState({
@@ -26,24 +29,43 @@ export class Weather extends React.Component {
     }, function(errorMessage){
       that.setState({
         isLoading:false,
+        errorMessage: errorMessage.message
       });
-      alert(errorMessage);
-    })
+    });
   }
 
   render() {
     let result;
-    const state = this.state
-    if(state.isLoading){
-      result = <h3 className="text-center">Fetching Weather</h3>
-    } else if(state.temp && state.location){
-      result = <WeatherResult data={state} />
+    let state = this.state;
+
+    ErrorModal.propTypes = {
+      title: React.PropTypes.string,
+      message: React.PropTypes.string.isRequired
+    };
+
+    const renderMessage = () => {
+      if(state.isLoading){
+        return <h3 className="text-center">Fetching Weather</h3>
+      } else if(state.temp && state.location){
+        return <WeatherResult data={state} />
+      }
     }
+
+    const renderError = () => {
+
+      if(typeof(state.errorMessage) === 'string') {
+        return (
+          <ErrorModal message={state.errorMessage} title={'Error'} />
+        )
+      }
+    }
+
     return (
       <div>
         <h1 className="text-center">Get Weather</h1>
         <WeatherForm onSearch = {this.handleSearch.bind(this)}/>
-        {result}
+        {renderMessage()}
+        {renderError()}
       </div>
     );
   }

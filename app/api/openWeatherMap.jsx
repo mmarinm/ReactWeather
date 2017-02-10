@@ -18,8 +18,8 @@ export function getTemp(location) {
     } else {
       return res.data;
     }
-  }, function (res) {
-    throw new Error(res.data.message);
+  }, function (err) {
+    throw new Error('Unable to fetch weather for this  location');
   });
   return {
     request
