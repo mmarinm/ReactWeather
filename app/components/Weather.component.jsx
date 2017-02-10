@@ -35,13 +35,13 @@ export class Weather extends React.Component {
     let result;
     const state = this.state
     if(state.isLoading){
-      result = <h3>Fetching Weather</h3>
+      result = <h3 className="text-center">Fetching Weather</h3>
     } else if(state.temp && state.location){
       result = <WeatherResult data={state} />
     }
     return (
       <div>
-        <h3>Weather Component</h3>
+        <h1 className="text-center">Get Weather</h1>
         <WeatherForm onSearch = {this.handleSearch.bind(this)}/>
         {result}
       </div>
