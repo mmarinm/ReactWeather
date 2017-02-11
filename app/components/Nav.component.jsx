@@ -1,43 +1,50 @@
 import React from "react";
 import { Link, IndexLink } from "react-router";
 
-const Nav = () => {
-  const onSearch = (e) => {
+export class Nav extends React.Component {
+
+  onSearch = (e) => {
     e.preventDefault();
-    alert('not wired')
+    const location = this.refs.location.value;
+    const encodedLocation = encodeURIComponent(location);
+    if (location.length > 0) {
+      this.refs.location.value = "";
+      window.location.hash = "/?location=" + encodedLocation;
+    }
   }
-  return (
-    <div className="top-bar">
-      <div className="top-bar-left">
-        <ul className="menu">
-          <li className="menu-text">
-            React Weather App
-          </li>
-          <li>
-            <IndexLink to="/" activeClassName="active">Get Weather</IndexLink>
-          </li>
-          <li>
-            <Link to="/about" activeClassName="active">About</Link>
-          </li>
-          <li>
-            <Link to="/examples" activeClassName="active">Examples</Link>
-          </li>
-        </ul>
-      </div>
-      <div className="top-bar-right">
-        <form onSubmit={onSearch}>
+
+  render() {
+    return (
+      <div className="top-bar">
+        <div className="top-bar-left">
           <ul className="menu">
-            <li>
-              <input type="search" placeholder="Search Weather"/>
+            <li className="menu-text">
+              React Weather App
             </li>
             <li>
-              <input type="submit" className="button" value="Get Weather"/>
+              <IndexLink to="/" activeClassName="active">Get Weather</IndexLink>
+            </li>
+            <li>
+              <Link to="/about" activeClassName="active">About</Link>
+            </li>
+            <li>
+              <Link to="/examples" activeClassName="active">Examples</Link>
             </li>
           </ul>
-        </form>
+        </div>
+        <div className="top-bar-right">
+          <form onSubmit={this.onSearch}>
+            <ul className="menu">
+              <li>
+                <input type="search" ref='location' placeholder='Enter City Name'/>
+              </li>
+              <li>
+                <input type="submit" className="button" value="Get Weather"/>
+              </li>
+            </ul>
+          </form>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
-
-export {Nav}

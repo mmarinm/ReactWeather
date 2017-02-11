@@ -17,7 +17,9 @@ export class Weather extends React.Component {
   handleSearch(location) {
     this.setState({
       isLoading:true,
-      errorMessage: undefined
+      errorMessage: undefined,
+      location: undefined,
+      temp: undefined
     });
     const that = this;
     getTemp(location).request.then(function(data){
@@ -32,6 +34,22 @@ export class Weather extends React.Component {
         errorMessage: errorMessage.message
       });
     });
+  }
+
+  componentDidMount() {
+    const location = this.props.location.query.location;
+    if(location && location.length > 0) {
+      this.handleSearch(location);
+      window.location.hash = '#/';
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const location = nextProps.location.query.location;
+    if(location && location.length > 0) {
+      this.handleSearch(location);
+      window.location.hash = '#/';
+    }
   }
 
   render() {
@@ -62,7 +80,7 @@ export class Weather extends React.Component {
 
     return (
       <div>
-        <h1 className="text-center">Get Weather</h1>
+        <h1 className="text-center page-title">Get Weather</h1>
         <WeatherForm onSearch = {this.handleSearch.bind(this)}/>
         {renderMessage()}
         {renderError()}
